@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChronicleButton } from "@/components/chronicle-button";
 
 export default function HomePage() {
   return (
@@ -106,8 +107,12 @@ pt.messages.send(
       {/* CTA */}
       <section className="py-24 px-6 text-center">
         <h2 className="text-4xl font-extrabold tracking-tight mb-4">Start sending in seconds</h2>
-        <p className="text-muted mb-8">Create a free account and get your API key instantly.</p>
-        <Link href="/auth/signup" className="bg-white text-black px-8 py-3 rounded-lg font-semibold text-sm hover:opacity-90">Get Started Free →</Link>
+        <p className="text-muted mb-8">Create a free account, or add PingText to your project with one click.</p>
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <Link href="/auth/signup" className="bg-white text-black px-8 py-3 rounded-lg font-semibold text-sm hover:opacity-90">Get Started Free →</Link>
+          <ChronicleButton />
+        </div>
+        <p className="text-xs text-muted mt-4">Your API key is securely attached when signed in.</p>
       </section>
 
       {/* Footer */}

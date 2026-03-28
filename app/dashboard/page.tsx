@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getUser, signOut, type User } from "@/lib/auth";
-
-const CHRONICLE_URL = "https://chronicle-auto-api.vercel.app";
-const AGENT_ID = "26a66d2e-9e27-410d-9ec9-a16c0797c16c";
+import { ChronicleButton } from "@/components/chronicle-button";
 
 interface Message {
   id: string;
@@ -21,7 +19,6 @@ export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [copied, setCopied] = useState(false);
-  const [integrating, setIntegrating] = useState(false);
 
   // Test send
   const [sendTo, setSendTo] = useState("+15551234567");
@@ -81,30 +78,6 @@ export default function DashboardPage() {
     navigator.clipboard.writeText(user.apiKey);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }
-
-  async function handleIntegrate() {
-    if (!user) return;
-    setIntegrating(true);
-    try {
-      const res = await fetch(`${CHRONICLE_URL}/api/integrate/prepare`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          agentId: AGENT_ID,
-          secrets: { PINGTEXT_API_KEY: user.apiKey },
-        }),
-      });
-      if (res.ok) {
-        const { url } = await res.json();
-        window.open(url, "_blank");
-      } else {
-        window.open(`${CHRONICLE_URL}/integrate/${AGENT_ID}`, "_blank");
-      }
-    } catch {
-      window.open(`${CHRONICLE_URL}/integrate/${AGENT_ID}`, "_blank");
-    }
-    setIntegrating(false);
   }
 
   function handleSignOut() {
@@ -176,16 +149,7 @@ export default function DashboardPage() {
             </div>
             <div className="border-t border-border pt-4">
               <p className="text-xs text-muted mb-3">Add PingText to any project with one click. Your API key is attached automatically.</p>
-              <button
-                onClick={handleIntegrate}
-                disabled={integrating}
-                className="w-full flex items-center justify-center gap-3 bg-black border border-border px-4 py-3 rounded-lg font-mono text-sm hover:border-muted transition-colors disabled:opacity-60"
-              >
-                <span className="flex flex-col items-start gap-0.5">
-                  <span className="font-medium">{integrating ? "Preparing..." : "Integrate PingText →"}</span>
-                  <span className="text-[10px] text-muted">powered by chronicle · API key included</span>
-                </span>
-              </button>
+              <ChronicleButton apiKey={user.apiKey} />
             </div>
           </div>
 
