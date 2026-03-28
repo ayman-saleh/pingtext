@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PingText — SMS API for Developers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050505; color: #fff;
+    font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; border-bottom: 1px solid #313131;
+  }
+  .brand { font-family: 'Geist Mono', monospace; font-size: 14px; font-weight: 600; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { font-family: 'Geist Mono', monospace; font-size: 13px; color: #757575; text-decoration: none; }
+  .nav-links a:hover { color: #fff; }
+  .hero { padding: 80px 0 60px; border-bottom: 1px solid #313131; }
+  .hero h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+  .hero p { margin-top: 16px; font-size: 18px; color: #757575; max-width: 500px; }
+  .code-block {
+    margin-top: 32px; background: #242424; border: 1px solid #313131;
+    padding: 20px; font-family: 'Geist Mono', monospace; font-size: 13px;
+    line-height: 1.6; color: #d6d6d6; overflow-x: auto;
+  }
+  .code-block .kw { color: #858585; }
+  .code-block .str { color: #fff; }
+  .cta-section {
+    padding: 60px 0; border-bottom: 1px solid #313131;
+    text-align: center;
+  }
+  .cta-section h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .cta-section p { margin-top: 8px; color: #757575; font-size: 14px; }
+  .cta-section .badge-wrap { margin-top: 32px; }
+  footer {
+    padding: 32px 0;
+    font-family: 'Geist Mono', monospace; font-size: 11px; color: #454545;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <span class="brand">pingtext</span>
+    <ul class="nav-links">
+      <li><a href="#docs">Docs</a></li>
+      <li><a href="https://github.com/ayman-saleh/pingtext">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Send SMS in<br>3 lines of code</h1>
+    <p>A simple API for sending text messages. No carrier contracts, no complexity. Just messages.</p>
+    <div class="code-block">
+<span class="kw">import</span> { PingText } <span class="kw">from</span> <span class="str">"pingtext"</span>;
+
+<span class="kw">const</span> pt = <span class="kw">new</span> PingText(process.env.PINGTEXT_API_KEY);
+
+<span class="kw">await</span> pt.messages.send({
+  to: <span class="str">"+15551234567"</span>,
+  body: <span class="str">"Your order has shipped!"</span>,
+});
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Integrate in seconds</h2>
+    <p>Click the button below to add PingText to your project with a single PR.</p>
+    <div class="badge-wrap">
+      <!-- Chronicle Integration Badge — agent ID will be set after seeding -->
+      <a href="http://localhost:3000/integrate/AGENT_ID_PLACEHOLDER"
+         style="display:inline-flex;align-items:center;gap:12px;padding:10px 16px;background:#050505;color:#ffffff;border-radius:0;font-family:monospace,sans-serif;text-decoration:none;border:1px solid #313131;"
+         target="_blank" rel="noopener noreferrer">
+        <span style="display:flex;flex-direction:column;gap:1px;">
+          <span style="font-size:13px;font-weight:600;line-height:1.3;">Integrate PingText</span>
+          <span style="font-size:10px;opacity:0.5;line-height:1.3;">powered by chronicle</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 PingText. All rights reserved.</footer>
+</div>
+</body>
+</html>
