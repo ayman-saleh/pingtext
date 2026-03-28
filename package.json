@@ -1,23 +1,23 @@
 {
-  "name": "pingtext",
-  "version": "1.0.0",
-  "description": "Simple SMS API for developers. Send text messages in 3 lines of code.",
-  "main": "dist/client.js",
-  "types": "dist/client.d.ts",
+  "name": "pingtext-new",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "express": "^4.21.0"
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.0.0",
-    "tsx": "^4.19.0",
-    "typescript": "^5.6.0"
-  },
-  "keywords": ["sms", "text", "messaging", "api"],
-  "license": "MIT"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
 }
