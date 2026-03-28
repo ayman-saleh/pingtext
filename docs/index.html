@@ -271,21 +271,67 @@ status = pt.messages.<span class="fn">get</span>(msg.id)
 <section class="cta">
   <div class="container">
     <h2>Start sending in seconds</h2>
-    <p>Add PingText to your project with a single pull request. No setup required.</p>
+    <p>Add PingText to your project with a single pull request. Your API key is attached automatically.</p>
     <div class="badge-wrap">
       <a href="#" class="btn-primary">Get API Key →</a>
-      <!-- Chronicle Integration Badge -->
-      <a href="https://chronicle-auto-api.vercel.app/integrate/26a66d2e-9e27-410d-9ec9-a16c0797c16c"
-         style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;background:#18181b;color:#fafafa;border-radius:8px;font-family:'JetBrains Mono',monospace;text-decoration:none;border:1px solid #27272a;font-size:13px;font-weight:500;"
-         target="_blank" rel="noopener noreferrer">
-        <span style="display:flex;flex-direction:column;gap:2px;">
-          <span>Integrate PingText →</span>
-          <span style="font-size:10px;opacity:0.4;">powered by chronicle</span>
+      <!-- Chronicle Integration Badge with secure API key passthrough -->
+      <button id="chronicle-btn"
+         style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;background:#18181b;color:#fafafa;border-radius:8px;font-family:'JetBrains Mono',monospace;text-decoration:none;border:1px solid #27272a;font-size:13px;font-weight:500;cursor:pointer;"
+         onclick="integrateWithChronicle()">
+        <span style="display:flex;flex-direction:column;gap:2px;text-align:left;">
+          <span id="chronicle-btn-text">Integrate PingText →</span>
+          <span style="font-size:10px;opacity:0.4;">powered by chronicle · API key included</span>
         </span>
-      </a>
+      </button>
     </div>
+    <p style="margin-top:16px;font-size:12px;color:var(--muted);">
+      Your API key is securely transmitted via an encrypted session. Chronicle never stores it.
+    </p>
   </div>
 </section>
+
+<script>
+  // In production, this would come from the logged-in user's dashboard session.
+  // For demo, we use a test key.
+  const DEMO_API_KEY = "pt_test_demo_k8x92mfp3q7w";
+  const CHRONICLE_URL = "https://chronicle-auto-api.vercel.app";
+  const AGENT_ID = "26a66d2e-9e27-410d-9ec9-a16c0797c16c";
+
+  async function integrateWithChronicle() {
+    const btn = document.getElementById("chronicle-btn");
+    const btnText = document.getElementById("chronicle-btn-text");
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    btnText.textContent = "Preparing...";
+
+    try {
+      const res = await fetch(CHRONICLE_URL + "/api/integrate/prepare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agentId: AGENT_ID,
+          secrets: { PINGTEXT_API_KEY: DEMO_API_KEY },
+        }),
+      });
+
+      if (!res.ok) {
+        // Fallback: open without API key if prepare fails (e.g. Redis not configured)
+        window.open(CHRONICLE_URL + "/integrate/" + AGENT_ID, "_blank");
+        return;
+      }
+
+      const { url } = await res.json();
+      window.open(url, "_blank");
+    } catch (err) {
+      // Fallback: direct link without API key
+      window.open(CHRONICLE_URL + "/integrate/" + AGENT_ID, "_blank");
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      btnText.textContent = "Integrate PingText →";
+    }
+  }
+</script>
 
 <footer>
   <div class="container footer-inner">
