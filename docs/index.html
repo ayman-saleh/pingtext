@@ -5,89 +5,293 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PingText — SMS API for Developers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #0a0a0a; --fg: #fafafa; --muted: #71717a;
+    --surface: #18181b; --border: #27272a;
+    --accent: #22c55e; --accent-dim: #16a34a;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #050505; color: #fff;
-    font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 0; border-bottom: 1px solid #313131;
-  }
-  .brand { font-family: 'Geist Mono', monospace; font-size: 14px; font-weight: 600; }
-  .nav-links { display: flex; gap: 24px; list-style: none; }
-  .nav-links a { font-family: 'Geist Mono', monospace; font-size: 13px; color: #757575; text-decoration: none; }
-  .nav-links a:hover { color: #fff; }
-  .hero { padding: 80px 0 60px; border-bottom: 1px solid #313131; }
-  .hero h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
-  .hero p { margin-top: 16px; font-size: 18px; color: #757575; max-width: 500px; }
-  .code-block {
-    margin-top: 32px; background: #242424; border: 1px solid #313131;
-    padding: 20px; font-family: 'Geist Mono', monospace; font-size: 13px;
-    line-height: 1.6; color: #d6d6d6; overflow-x: auto;
-  }
-  .code-block .kw { color: #858585; }
-  .code-block .str { color: #fff; }
-  .cta-section {
-    padding: 60px 0; border-bottom: 1px solid #313131;
-    text-align: center;
-  }
-  .cta-section h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-  .cta-section p { margin-top: 8px; color: #757575; font-size: 14px; }
-  .cta-section .badge-wrap { margin-top: 32px; }
-  footer {
-    padding: 32px 0;
-    font-family: 'Geist Mono', monospace; font-size: 11px; color: #454545;
-    text-align: center;
+  body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav { border-bottom: 1px solid var(--border); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .nav-brand { display: flex; align-items: center; gap: 8px; }
+  .nav-logo { width: 24px; height: 24px; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: #000; }
+  .nav-name { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-cta { background: var(--fg); color: var(--bg); padding: 6px 14px; font-size: 13px; font-weight: 600; border-radius: 6px; }
+  .nav-cta:hover { opacity: 0.9; }
+
+  /* Hero */
+  .hero { padding: 100px 0 80px; border-bottom: 1px solid var(--border); }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 4px 12px; border-radius: 100px; font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+  .hero-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  .hero h1 { font-size: 56px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; }
+  .hero h1 .accent { color: var(--accent); }
+  .hero .subtitle { margin-top: 20px; font-size: 18px; color: var(--muted); max-width: 480px; line-height: 1.6; }
+  .hero-actions { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: var(--fg); color: var(--bg); padding: 12px 24px; font-size: 14px; font-weight: 600; border-radius: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-secondary { background: transparent; color: var(--fg); padding: 12px 24px; font-size: 14px; font-weight: 500; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
+  .btn-secondary:hover { border-color: var(--muted); }
+
+  /* Code block */
+  .code-section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  .code-section .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  .code-section h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .code-section .desc { color: var(--muted); font-size: 15px; max-width: 420px; margin-bottom: 32px; }
+  .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .code-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .code-card-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+  .code-card-header .lang { background: var(--border); padding: 2px 8px; border-radius: 4px; font-size: 10px; }
+  .code-card pre { padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #d4d4d8; overflow-x: auto; }
+  .code-card pre .kw { color: #c084fc; }
+  .code-card pre .str { color: #86efac; }
+  .code-card pre .fn { color: #93c5fd; }
+  .code-card pre .cm { color: #52525b; }
+
+  /* Features */
+  .features { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  .features h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 48px; }
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .feature-item { background: var(--bg); padding: 32px; }
+  .feature-icon { width: 36px; height: 36px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 18px; }
+  .feature-item h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .feature-item p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* Pricing */
+  .pricing { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  .pricing h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 8px; }
+  .pricing .sub { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 48px; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .pricing-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; }
+  .pricing-card.featured { border-color: var(--accent); }
+  .pricing-card .tier { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .pricing-card .price { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; }
+  .pricing-card .price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+  .pricing-card .desc { font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 24px; }
+  .pricing-card ul { list-style: none; margin-bottom: 24px; }
+  .pricing-card li { font-size: 13px; color: var(--muted); padding: 6px 0; display: flex; align-items: center; gap: 8px; }
+  .pricing-card li::before { content: "✓"; color: var(--accent); font-weight: 700; font-size: 12px; }
+  .pricing-btn { display: block; width: 100%; text-align: center; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; border: 1px solid var(--border); background: transparent; color: var(--fg); cursor: pointer; }
+  .pricing-card.featured .pricing-btn { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* CTA */
+  .cta { padding: 100px 0; text-align: center; }
+  .cta h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
+  .cta p { color: var(--muted); font-size: 16px; margin-bottom: 36px; }
+  .cta .badge-wrap { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 32px 0; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { display: flex; align-items: center; gap: 8px; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 12px; color: var(--muted); }
+  .footer-links a:hover { color: var(--fg); }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 36px; }
+    .code-grid, .feature-grid, .pricing-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <nav>
-    <span class="brand">pingtext</span>
-    <ul class="nav-links">
-      <li><a href="#docs">Docs</a></li>
-      <li><a href="https://github.com/ayman-saleh/pingtext">GitHub</a></li>
-    </ul>
-  </nav>
 
-  <section class="hero">
-    <h1>Send SMS in<br>3 lines of code</h1>
-    <p>A simple API for sending text messages. No carrier contracts, no complexity. Just messages.</p>
-    <div class="code-block">
-<span class="kw">import</span> { PingText } <span class="kw">from</span> <span class="str">"pingtext"</span>;
-
-<span class="kw">const</span> pt = <span class="kw">new</span> PingText(process.env.PINGTEXT_API_KEY);
-
-<span class="kw">await</span> pt.messages.send({
-  to: <span class="str">"+15551234567"</span>,
-  body: <span class="str">"Your order has shipped!"</span>,
-});
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="nav-logo">P</div>
+      <span class="nav-name">pingtext</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://github.com/ayman-saleh/pingtext">GitHub</a>
+      <a href="#" class="nav-cta">Get API Key</a>
     </div>
-  </section>
+  </div>
+</nav>
 
-  <section class="cta-section">
-    <h2>Integrate in seconds</h2>
-    <p>Click the button below to add PingText to your project with a single PR.</p>
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><span class="dot"></span> Now with international SMS support</div>
+    <h1>SMS that<br><span class="accent">just works.</span></h1>
+    <p class="subtitle">The developer-first SMS API. Send text messages globally with 3 lines of code. No carrier contracts, no complexity.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Get Started Free →</a>
+      <a href="#code" class="btn-secondary">View Documentation</a>
+    </div>
+  </div>
+</section>
+
+<section class="code-section" id="code">
+  <div class="container">
+    <div class="label">Quick Start</div>
+    <h2>Three lines. That's it.</h2>
+    <p class="desc">Install the SDK, create a client, send a message. No configuration, no setup wizards.</p>
+    <div class="code-grid">
+      <div class="code-card">
+        <div class="code-card-header"><span class="lang">TypeScript</span> send-sms.ts</div>
+        <pre><span class="kw">import</span> { PingText } <span class="kw">from</span> <span class="str">"pingtext"</span>;
+
+<span class="kw">const</span> pt = <span class="kw">new</span> <span class="fn">PingText</span>(process.env.PINGTEXT_API_KEY);
+
+<span class="kw">await</span> pt.messages.<span class="fn">send</span>({
+  to: <span class="str">"+15551234567"</span>,
+  body: <span class="str">"Your order has shipped! 📦"</span>,
+});
+
+<span class="cm">// Check delivery status</span>
+<span class="kw">const</span> status = <span class="kw">await</span> pt.messages.<span class="fn">get</span>(msg.id);
+console.<span class="fn">log</span>(status.status); <span class="cm">// "delivered"</span></pre>
+      </div>
+      <div class="code-card">
+        <div class="code-card-header"><span class="lang">Python</span> send_sms.py</div>
+        <pre><span class="kw">import</span> pingtext
+<span class="kw">import</span> os
+
+pt = pingtext.<span class="fn">PingText</span>(os.environ[<span class="str">"PINGTEXT_API_KEY"</span>])
+
+msg = pt.messages.<span class="fn">send</span>(
+    to=<span class="str">"+15551234567"</span>,
+    body=<span class="str">"Your order has shipped! 📦"</span>,
+)
+
+<span class="cm"># Check delivery status</span>
+status = pt.messages.<span class="fn">get</span>(msg.id)
+<span class="fn">print</span>(status.status)  <span class="cm"># "delivered"</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <h2>Built for developers</h2>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <h3>Sub-second delivery</h3>
+        <p>Messages hit carrier networks in under 200ms. Real-time delivery webhooks included.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🌍</div>
+        <h3>200+ countries</h3>
+        <p>Send SMS globally. Local numbers, international routing, automatic encoding.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔑</div>
+        <h3>Simple auth</h3>
+        <p>One API key. Bearer token auth. No OAuth flows, no complex credentials.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <h3>Delivery tracking</h3>
+        <p>Real-time status: queued, sent, delivered, failed. Webhook events for each state.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🛡️</div>
+        <h3>Built-in compliance</h3>
+        <p>Automatic opt-out handling, TCPA compliance, and carrier filtering baked in.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔧</div>
+        <h3>Official SDKs</h3>
+        <p>TypeScript and Python SDKs with full type safety, retries, and error handling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="container">
+    <h2>Simple, transparent pricing</h2>
+    <p class="sub">Start free. Scale as you grow. No hidden fees.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="tier">Free</div>
+        <div class="price">$0<span>/mo</span></div>
+        <div class="desc">For testing and side projects</div>
+        <ul>
+          <li>100 messages/month</li>
+          <li>Test mode (no charges)</li>
+          <li>1 phone number</li>
+          <li>Community support</li>
+        </ul>
+        <button class="pricing-btn">Get Started</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="tier">Pro</div>
+        <div class="price">$29<span>/mo</span></div>
+        <div class="desc">For growing applications</div>
+        <ul>
+          <li>10,000 messages/month</li>
+          <li>$0.005 per additional SMS</li>
+          <li>5 phone numbers</li>
+          <li>Webhooks & analytics</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="pricing-btn">Start Free Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="tier">Enterprise</div>
+        <div class="price">Custom</div>
+        <div class="desc">For high-volume senders</div>
+        <ul>
+          <li>Unlimited messages</li>
+          <li>Volume discounts</li>
+          <li>Dedicated numbers</li>
+          <li>SLA & uptime guarantee</li>
+          <li>Dedicated support</li>
+        </ul>
+        <button class="pricing-btn">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2>Start sending in seconds</h2>
+    <p>Add PingText to your project with a single pull request. No setup required.</p>
     <div class="badge-wrap">
+      <a href="#" class="btn-primary">Get API Key →</a>
       <!-- Chronicle Integration Badge -->
       <a href="https://chronicle-auto-api.vercel.app/integrate/26a66d2e-9e27-410d-9ec9-a16c0797c16c"
-         style="display:inline-flex;align-items:center;gap:12px;padding:10px 16px;background:#050505;color:#ffffff;border-radius:0;font-family:monospace,sans-serif;text-decoration:none;border:1px solid #313131;"
+         style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;background:#18181b;color:#fafafa;border-radius:8px;font-family:'JetBrains Mono',monospace;text-decoration:none;border:1px solid #27272a;font-size:13px;font-weight:500;"
          target="_blank" rel="noopener noreferrer">
-        <span style="display:flex;flex-direction:column;gap:1px;">
-          <span style="font-size:13px;font-weight:600;line-height:1.3;">Integrate PingText</span>
-          <span style="font-size:10px;opacity:0.5;line-height:1.3;">powered by chronicle</span>
+        <span style="display:flex;flex-direction:column;gap:2px;">
+          <span>Integrate PingText →</span>
+          <span style="font-size:10px;opacity:0.4;">powered by chronicle</span>
         </span>
       </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>&copy; 2026 PingText. All rights reserved.</footer>
-</div>
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <div class="nav-logo" style="width:18px;height:18px;font-size:10px;border-radius:3px;">P</div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;">pingtext</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Docs</a>
+      <a href="#">Status</a>
+      <a href="https://github.com/ayman-saleh/pingtext">GitHub</a>
+      <a href="#">Privacy</a>
+      <span style="font-size:12px;color:var(--muted);">© 2026 PingText Inc.</span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
